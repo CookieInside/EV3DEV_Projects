@@ -1,5 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent
+from ev3dev2.sound import Sound
+
+sound = Sound()
 
 motor_A = LargeMotor(OUTPUT_A)
 motor_B = LargeMotor(OUTPUT_B)
@@ -12,6 +15,14 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+# SPEAK
+@app.route("/speak", methods=["POST"])
+def speak():
+    value = request.form["value"]
+    sound.speak(value)
+    return jsonify({"result" : "the robot said: '" + value + "'."})
+
 
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
