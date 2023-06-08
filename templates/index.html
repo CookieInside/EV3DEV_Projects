@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WEB CONTROLLER</title>
+    <link rel="stylesheet" type="text/css" href="style_index.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function send_values(where, value){
+            document.getElementById(where).textContent = value + "%";
+            $.ajax({
+                type: "POST",
+                url: where,
+                data: {
+                    value: value
+                },
+                success: function(response){
+                    console.log(response);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <caption>MOTOR CONTROLS</caption>
+        <thead>
+            <tr>
+                <th>NAME</th>
+                <th>MOTOR A</th>
+                <th>MOTOR B</th>
+                <th>MOTOR C</th>
+                <th>MOTOR D</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tabledesc">POWER</td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('power_A', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('power_B', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('power_C', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('power_D', this.value)"></td>
+            </tr>
+            <tr>
+                <td class="tabledesc">SPEED</td>
+                <td><span id="/speed_A"></span><br><input id="slider_A" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_A', this.value)"></td>
+                <td><span id="/speed_B"></span><br><input id="slider_B" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_B', this.value)"></td>
+                <td><span id="/speed_C"></span><br><input id="slider_C" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_C', this.value)"></td>
+                <td><span id="/speed_D"></span><br><input id="slider_D" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_D', this.value)"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

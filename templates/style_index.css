@@ -1,0 +1,21 @@
+.slider{
+    padding-top: 100%;
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+td{
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tabledesc{
+    border: 0px;
+}
+body{
+    font-family: Calibri;
+}
