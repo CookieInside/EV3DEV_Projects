@@ -2,11 +2,13 @@
 <html>
 <head>
     <title>WEB CONTROLLER</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.discordapp.com/attachments/930534634855464980/1116783752333512755/style_index.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.discordapp.com/attachments/930534634855464980/1116826903140126821/style_index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function send_values(where, value){
-            //document.getElementById(where).textContent = value + "%";
+            if(where.includes("speed")){
+                document.getElementById(where).textContent = value + "%";
+            }
             $.ajax({
                 type: "POST",
                 url: where,
@@ -21,8 +23,8 @@
     </script>
 </head>
 <body>
+    <h3 style="margin-left: 3%;">MOTOR CONTROLS</h3>
     <table>
-        <caption>MOTOR CONTROLS</caption>
         <thead>
             <tr>
                 <th>NAME</th>
@@ -42,10 +44,10 @@
             </tr>
             <tr>
                 <td class="tabledesc">SPEED</td>
-                <td><span id="/speed_A"></span><br><input id="slider_A" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_A', this.value)"></td>
-                <td><span id="/speed_B"></span><br><input id="slider_B" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_B', this.value)"></td>
-                <td><span id="/speed_C"></span><br><input id="slider_C" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_C', this.value)"></td>
-                <td><span id="/speed_D"></span><br><input id="slider_D" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_D', this.value)"></td>
+                <td><span id="/speed_A">0%</span><br><input id="slider_A" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_A', this.value)"></td>
+                <td><span id="/speed_B">0%</span><br><input id="slider_B" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_B', this.value)"></td>
+                <td><span id="/speed_C">0%</span><br><input id="slider_C" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_C', this.value)"></td>
+                <td><span id="/speed_D">0%</span><br><input id="slider_D" class="slider" type="range" min="-100" max="100" step="1" oninput="send_values('/speed_D', this.value)"></td>
             </tr>
         </tbody>
     </table>
@@ -53,10 +55,9 @@
     <h3 style="margin-left: 3%;">SPEAK</h3>
     <table style="margin-left: 3%;">
         <tr>
-            <td><input type="text"></td>
-            <td><button onclick="send_values('/speak')">SEND TEXT</button></td>
+            <td><input id="speak_in" type="text"></td>
+            <td><button onclick="send_values('/speak', document.getElementById('speak_in').value)">SEND TEXT</button></td>
         </tr>
     </table>
-    
 </body>
 </html>

@@ -93,6 +93,5 @@ def power_D():
     return jsonify({"result" : "power was updated to " + str(value)})
 
 
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
