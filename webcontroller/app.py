@@ -29,25 +29,29 @@ def speak():
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
     value = int(request.form["value"])
-    motor_A.speed_sp(value)
-    return jsonify({"result" : "speed was updated to " + value})
+    motor_A.run_forever()
+    motor_A.speed_sp = value*10
+    return jsonify({"result" : "speed was updated to " + str(value)})
 
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
     value = int(request.form["value"])
-    motor_B.speed_sp(value)
+    motor_B.run_forever()
+    motor_B.speed_sp = value*10
     return jsonify({"result" : "speed was updated to " + value})
 
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
     value = int(request.form["value"])
-    motor_C.speed_sp(value)
+    motor_C.run_forever()
+    motor_C.speed_sp = value*10
     return jsonify({"result" : "speed was updated to " + value})
 
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
     value = int(request.form["value"])
-    motor_D.speed_sp(value)
+    motor_D.run_forever()
+    motor_D.speed_sp = value*10
     return jsonify({"result" : "speed was updated to " + value})
 
 
