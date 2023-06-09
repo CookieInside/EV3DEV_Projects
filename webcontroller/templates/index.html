@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function send_values(where, value){
-            document.getElementById(where).textContent = value + "%";
+            //document.getElementById(where).textContent = value + "%";
             $.ajax({
                 type: "POST",
                 url: where,
@@ -35,10 +35,10 @@
         <tbody>
             <tr>
                 <td class="tabledesc">POWER</td>
-                <td><input class="power_switch" type="checkbox" onchange="send_values('power_A', this.value)"></td>
-                <td><input class="power_switch" type="checkbox" onchange="send_values('power_B', this.value)"></td>
-                <td><input class="power_switch" type="checkbox" onchange="send_values('power_C', this.value)"></td>
-                <td><input class="power_switch" type="checkbox" onchange="send_values('power_D', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('/power_A', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('/power_B', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('/power_C', this.value)"></td>
+                <td><input class="power_switch" type="checkbox" onchange="send_values('/power_D', this.value)"></td>
             </tr>
             <tr>
                 <td class="tabledesc">SPEED</td>
