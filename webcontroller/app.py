@@ -1,38 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent
 from ev3dev2.sound import Sound
-import socket
-
-
-port = 8080
-
-# Socket erstellen
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Socket an die lokale IP-Adresse und den Port binden
-server_socket.bind(('0.0.0.0', port))
-
-# Socket in den Listening-Modus versetzen
-server_socket.listen(1)
-
-print('Server lauscht auf Port', port)
-
-# Auf eingehende Verbindungen warten
-while True:
-    # Verbindung akzeptieren
-    client_socket, client_address = server_socket.accept()
-    
-    print('Neue Verbindung von:', client_address)
-    
-    # Daten von Client empfangen
-    data = client_socket.recv(1024)
-    
-    # Empfangene Daten verarbeiten
-    # ...
-    
-    # Verbindung schließen
-    client_socket.close()
-
 
 
 sound = Sound()
@@ -123,4 +91,4 @@ def power_D():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0")
