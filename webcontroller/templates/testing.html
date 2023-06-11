@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EV3 WEB-USER-INTERFACE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-secondary">
+                    <tr>
+                        <th colspan="4">Motoren</th>
+                    </tr>
+                </thead>
+                <tr>
+                        <th>Port A</th>
+                        <th>Port B</th>
+                        <th>Port C</th>
+                        <th>Port D</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-control" id="atype" onchange="send_values('sync', '')">
+                                <option>großer EV3 Motor</option>
+                                <option>kleiner EV3 Motor</option>
+                                <option>großer NXT Motor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="btype" onchange="send_values('sync', '')">
+                                <option>großer EV3 Motor</option>
+                                <option>kleiner EV3 Motor</option>
+                                <option>großer NXT Motor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="ctype" onchange="send_values('sync', '')">
+                                <option>großer EV3 Motor</option>
+                                <option>kleiner EV3 Motor</option>
+                                <option>großer NXT Motor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="dtype" onchange="send_values('sync', '')">
+                                <option>großer EV3 Motor</option>
+                                <option>kleiner EV3 Motor</option>
+                                <option>großer NXT Motor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="toggleSwitchA">
+                                <label class="custom-control-label" for="toggleSwitchA">Aus-/Einschalten</label>
+                            </div>
+                            <input type="range" class="form-range" id="customRange" min="-100" max="100" oninput="send_values('/speed_A', this.value)">
+                            <p>Speed: <span id="/speed_A">0%</span></p>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="toggleSwitchB">
+                                <label class="custom-control-label" for="toggleSwitchB">Aus-/Einschalten</label>
+                            </div>
+                            <input type="range" class="form-range" id="customRange" min="-100" max="100" oninput="send_values('/speed_B', this.value)">
+                            <p>Speed: <span id="/speed_B">0%</span></p>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="toggleSwitchC">
+                                <label class="custom-control-label" for="toggleSwitchC">Aus-/Einschalten</label>
+                            </div>
+                            <input type="range" class="form-range" id="customRange" min="-100" max="100" oninput="send_values('/speed_C', this.value)">
+                            <p>Speed: <span id="/speed_C">0%</span></p>
+                        </td>
+                        <td>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="toggleSwitchD">
+                                <label class="custom-control-label" for="toggleSwitchD">Aus-/Einschalten</label>
+                            </div>
+                            <input type="range" class="form-range" id="customRange" min="-100" max="100" oninput="send_values('/speed_D', this.value)">
+                            <p>Speed: <span id="/speed_D">0%</span></p>
+                        </td>
+                    </tr>
+                </tbody>
+                <thead class="table-secondary">
+                    <tr>
+                    <th colspan="4">Sensoren</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <th>Port 1</th>
+                        <th>Port 2</th>
+                        <th>Port 3</th>
+                        <th>Port 4</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select class="form-control" id="onetype" onchange="send_values('sync', '')">
+                                <option>Farbsensor</option>
+                                <option>Lichtsensor</option>
+                                <option>Schallsensor</option>
+                                <option>Temperatursensor</option>
+                                <option>Berührungssensor</option>
+                                <option>Ultraschallsensor</option>
+                                <option>Beschleunigungssensor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="twotype" onchange="send_values('sync', '')">
+                                <option>Farbsensor</option>
+                                <option>Lichtsensor</option>
+                                <option>Schallsensor</option>
+                                <option>Temperatursensor</option>
+                                <option>Berührungssensor</option>
+                                <option>Ultraschallsensor</option>
+                                <option>Beschleunigungssensor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="threetype" onchange="send_values('sync', '')">
+                                <option>Farbsensor</option>
+                                <option>Lichtsensor</option>
+                                <option>Schallsensor</option>
+                                <option>Temperatursensor</option>
+                                <option>Berührungssensor</option>
+                                <option>Ultraschallsensor</option>
+                                <option>Beschleunigungssensor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" id="fourtype" onchange="send_values('sync', '')">
+                                <option>Farbsensor</option>
+                                <option>Lichtsensor</option>
+                                <option>Schallsensor</option>
+                                <option>Temperatursensor</option>
+                                <option>Berührungssensor</option>
+                                <option>Ultraschallsensor</option>
+                                <option>Beschleunigungssensor</option>
+                                <option>nicht genutzt</option>
+                            </select>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+        <script>
+            function send_values(where, value){
+                if(where.includes("speed")){
+                    document.getElementById(where).textContent = value + "%";
+                    $.ajax({
+                        type: "POST",
+                        url: where,
+                        data: {
+                            speed: value
+                        },
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
+                }
+                else if(where.includes("sync")){
+                    $.ajax({
+                        type: "POST",
+                        url: "/sync",
+                        data: {
+                            A_type: document.getElementById("atype"),
+                            B_type: document.getElementById("btype"),
+                            C_type: document.getElementById("ctype"),
+                            D_type: document.getElementById("dtype"),
+                            one_type: document.getElementById("onetype"),
+                            two_type: document.getElementById("twotype"),
+                            three_type: document.getElementById("threetype"),
+                            four_type: document.getElementById("fourtype")
+                        },
+                        success: function(response){
+                            console.log(response);
+                        }
+                    });
+                }
+
+            }
+        </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

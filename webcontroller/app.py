@@ -4,14 +4,24 @@ from ev3dev2.sound import Sound
 
 
 sound = Sound()
-
-motor_A = LargeMotor(OUTPUT_A)
-motor_B = LargeMotor(OUTPUT_B)
-motor_C = Motor(OUTPUT_C)
-motor_D = MediumMotor(OUTPUT_D)
-
-
 app = Flask(__name__)
+
+# GLOBAL MOTORS
+A_type = ""
+B_type = ""
+C_type = ""
+D_type = ""
+motor_A = Motor(OUTPUT_A)
+motor_B = Motor(OUTPUT_B)
+motor_C = Motor(OUTPUT_C)
+motor_D = Motor(OUTPUT_D)
+
+# GLOBAL SENSORS
+one_type = ""
+two_type = ""
+three_type = ""
+four_type = ""
+
 
 @app.route("/")
 def index():
@@ -24,35 +34,91 @@ def speak():
     sound.speak(value)
     return jsonify({"result" : "the robot said: '" + value + "'."})
 
+# SYNC
+@app.rout("/sync", methods=["POST"])
+def sync():
+    # type-update
+    A_type = request.form["A_type"]
+    B_type = request.form["B_type"]
+    C_type = request.form["C_type"]
+    D_type = request.form["D_type"]
+    one_type = request.form["one_type"]
+    two_type = request.form["two_type"]
+    three_type = request.form["three_type"]
+    four_type = request.form["four_type"]
+    # sync motor A
+    if A_type == "großer EV3 Motor":
+        motor_A = LargeMotor(OUTPUT_A)
+    elif A_type == "kleiner EV3 Motor":
+        motor_A = MediumMotor(OUTPUT_A)
+    elif A_type == "großer NXT Motor":
+        motor_A = Motor(OUTPUT_A)
+    elif A_type == "nicht genutzt":
+        motor_A = "EMPTY"
+    # sync motor B
+    if B_type == "großer EV3 Motor":
+        motor_B = LargeMotor(OUTPUT_B)
+    elif B_type == "kleiner EV3 Motor":
+        motor_B = MediumMotor(OUTPUT_B)
+    elif B_type == "großer NXT Motor":
+        motor_B = Motor(OUTPUT_B)
+    elif B_type == "nicht genutzt":
+        motor_B = "EMPTY"
+    # sync motor C
+    if C_type == "großer EV3 Motor":
+        motor_C = LargeMotor(OUTPUT_C)
+    elif C_type == "kleiner EV3 Motor":
+        motor_C = MediumMotor(OUTPUT_C)
+    elif C_type == "großer NXT Motor":
+        motor_C = Motor(OUTPUT_C)
+    elif C_type == "nicht genutzt":
+        motor_C = "EMPTY"
+    # sync motor D
+    if D_type == "großer EV3 Motor":
+        motor_D = LargeMotor(OUTPUT_D)
+    elif D_type == "kleiner EV3 Motor":
+        motor_D = MediumMotor(OUTPUT_D)
+    elif D_type == "großer NXT Motor":
+        motor_D = Motor(OUTPUT_D)
+    elif D_type == "nicht genutzt":
+        motor_D = "EMPTY"
 
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
-    value = int(request.form["value"])
-    #motor_A.run_forever()
-    motor_A.speed_sp = value*10
-    return jsonify({"result" : "speed was updated to " + str(value)})
+    speed = int(request.form["speed"])
+    if A_type == "großer NXT Motor":
+        motor_A.speed_sp = speed
+    else:
+        motor_A.speed_sp = speed*10
+    return jsonify({"result" : "speed was updated to " + str(speed)})
 
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
-    value = int(request.form["value"])
-    #motor_B.run_forever()
-    motor_B.speed_sp = value*10
-    return jsonify({"result" : "speed was updated to " + str(value)})
+    speed = int(request.form["speed"])
+    if B_type == "großer NXT Motor":
+        motor_B.speed_sp = speed
+    else:
+        motor_B.speed_sp = speed*10
+    return jsonify({"result" : "speed was updated to " + str(speed)})
 
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
-    value = int(request.form["value"])
-    #motor_C.run_forever()
-    motor_C.on(value)
-    return jsonify({"result" : "speed was updated to " + str(value)})
+    speed = int(request.form["speed"])
+    if C_type == "großer NXT Motor":
+        motor_C.speed_sp = speed
+    else:
+        motor_C.speed_sp = speed*10
+    return jsonify({"result" : "speed was updated to " + str(speed)})
 
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
-    value = int(request.form["value"])
-    #motor_D.run_forever()
-    motor_D.speed_sp = value*10
-    return jsonify({"result" : "speed was updated to " + str(value)})
+    speed = int(request.form["speed"])
+    if D_type == "großer NXT Motor":
+        motor_D.speed_sp = speed
+    else:
+        motor_D.speed_sp = speed*10
+    return jsonify({"result" : "speed was updated to " + str(speed)})
 
 
 # POWER UPDATER
