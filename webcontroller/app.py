@@ -22,6 +22,30 @@ two_type = ""
 three_type = ""
 four_type = ""
 
+def set_sync(type, motor, port):
+    match type:
+        case "großer EV3 Motor":
+            motor = LargeMotor(port)
+        case "kleiner EV3 Motor":
+            motor = MediumMotor(port)
+        case "großer NXT Motor":
+            motor = Motor(port)
+        case "nicht genutzt":
+            motor = "not used"
+
+def set_speed(motor, speed):
+    if A_type == "großer NXT Motor":
+        motor.speed_sp = int(speed)
+    else:
+        motor.speed_sp = int(speed)*10
+    return jsonify({"result" : f"power was updated to {speed}"})
+
+def set_power(motor, value):
+    if value == "on":
+        motor.run_forever()
+    else:
+        motor.stop()
+        return jsonify({"result" : f"the motor is now {value}"})
 
 @app.route("/")
 def index():
@@ -55,20 +79,20 @@ def sync():
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
-    set_speed(motor_A, request.form["speed"])
-
+    return set_speed(motor_A, request.form["speed"])
+    
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
-    set_speed(motor_B, request.form["speed"])
-
+    return set_speed(motor_B, request.form["speed"])
+    
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
-    set_speed(motor_C, request.form["speed"])
-
+    return set_speed(motor_C, request.form["speed"])
+    
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
-    set_speed(motor_D, request.form["speed"])
-
+    return set_speed(motor_D, request.form["speed"])
+    
 # POWER UPDATER
 @app.route("/power_A", methods=["POST"])
 def power_A():
@@ -101,24 +125,6 @@ def power_D():
         motor_D.stop()
     return jsonify({"result" : "power was updated to " + str(value)})
 
-
-def set_sync(type, motor, port):
-    match type:
-        case "großer EV3 Motor":
-            motor = LargeMotor(port)
-        case "kleiner EV3 Motor":
-            motor = MediumMotor(port)
-        case "großer NXT Motor":
-            motor = Motor(port)
-        case "nicht genutzt":
-            motor = "not used"
-
-def set_speed(motor, speed):
-    if A_type == "großer NXT Motor":
-        motor.speed_sp = speed
-    else:
-        motor.speed_sp = speed*10
-    return jsonify({"result" : "power was updated to " + str(speed)})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
