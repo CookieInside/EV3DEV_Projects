@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPercent, Motor
+from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, Motor
 from ev3dev2.sound import Sound
 
 
@@ -33,8 +33,8 @@ def set_sync(type, motor, port):
         case "nicht genutzt":
             motor = "not used"
 
-def set_speed(motor, speed):
-    if A_type == "großer NXT Motor":
+def set_speed(type, motor, speed):
+    if type == "großer NXT Motor":
         motor.speed_sp = int(speed)
     else:
         motor.speed_sp = int(speed)*10
@@ -79,51 +79,36 @@ def sync():
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
-    return set_speed(motor_A, request.form["speed"])
+    return set_speed(A_type, motor_A, request.form["speed"])
     
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
-    return set_speed(motor_B, request.form["speed"])
+    return set_speed(B_type, motor_B, request.form["speed"])
     
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
-    return set_speed(motor_C, request.form["speed"])
+    return set_speed(C_type, motor_C, request.form["speed"])
     
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
-    return set_speed(motor_D, request.form["speed"])
+    return set_speed(D_type, motor_D, request.form["speed"])
     
 # POWER UPDATER
 @app.route("/power_A", methods=["POST"])
 def power_A():
-    set_speed(motor_A, request.form["value"])
+    return set_power(motor_A, request.form["value"])
 
 @app.route("/power_B", methods=["POST"])
 def power_B():
-    value = request.form["value"]
-    if value == "on":
-        motor_B.run_forever()
-    else:
-        motor_B.stop()
-    return jsonify({"result" : "power was updated to " + str(value)})
+    return set_power(motor_B, request.form["value"])
 
 @app.route("/power_C", methods=["POST"])
 def power_C():
-    value = request.form["value"]
-    if value == "on":
-        motor_C.run_forever()
-    else:
-        motor_C.stop()
-    return jsonify({"result" : "power was updated to " + str(value)})
+    return set_power(motor_C, request.form["value"])
 
 @app.route("/power_D", methods=["POST"])
 def power_D():
-    value = request.form["value"]
-    if value == "on":
-        motor_D.run_forever()
-    else:
-        motor_D.stop()
-    return jsonify({"result" : "power was updated to " + str(value)})
+    return set_power(motor_D, request.form["value"])
 
 
 if __name__ == "__main__":

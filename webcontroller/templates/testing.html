@@ -24,7 +24,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <select class="form-control" id="atype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="a_type" onchange="send_values('sync', '')">
                                 <option>großer EV3 Motor</option>
                                 <option>kleiner EV3 Motor</option>
                                 <option>großer NXT Motor</option>
@@ -32,7 +32,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="btype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="b_type" onchange="send_values('sync', '')">
                                 <option>großer EV3 Motor</option>
                                 <option>kleiner EV3 Motor</option>
                                 <option>großer NXT Motor</option>
@@ -40,7 +40,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="ctype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="c_type" onchange="send_values('sync', '')">
                                 <option>großer EV3 Motor</option>
                                 <option>kleiner EV3 Motor</option>
                                 <option>großer NXT Motor</option>
@@ -48,7 +48,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="dtype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="d_type" onchange="send_values('sync', '')">
                                 <option>großer EV3 Motor</option>
                                 <option>kleiner EV3 Motor</option>
                                 <option>großer NXT Motor</option>
@@ -104,7 +104,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <select class="form-control" id="onetype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="one_type" onchange="send_values('sync', '')">
                                 <option>Farbsensor</option>
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
@@ -116,7 +116,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="twotype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="two_type" onchange="send_values('sync', '')">
                                 <option>Farbsensor</option>
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
@@ -128,7 +128,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="threetype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="three_type" onchange="send_values('sync', '')">
                                 <option>Farbsensor</option>
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
@@ -140,7 +140,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" id="fourtype" onchange="send_values('sync', '')">
+                            <select class="form-control" id="four_type" onchange="send_values('sync', '')">
                                 <option>Farbsensor</option>
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
@@ -175,14 +175,14 @@
                         type: "POST",
                         url: "/sync",
                         data: {
-                            A_type: document.getElementById("atype"),
-                            B_type: document.getElementById("btype"),
-                            C_type: document.getElementById("ctype"),
-                            D_type: document.getElementById("dtype"),
-                            one_type: document.getElementById("onetype"),
-                            two_type: document.getElementById("twotype"),
-                            three_type: document.getElementById("threetype"),
-                            four_type: document.getElementById("fourtype")
+                            A_type: document.getElementById("a_type").checked,
+                            B_type: document.getElementById("b_type").checked,
+                            C_type: document.getElementById("c_type").checked,
+                            D_type: document.getElementById("d_type").checked,
+                            one_type: document.getElementById("one_type").checked,
+                            two_type: document.getElementById("two_type").checked,
+                            three_type: document.getElementById("three_type").checked,
+                            four_type: document.getElementById("four_type").checked
                         },
                         success: function(response){
                             console.log(response);
