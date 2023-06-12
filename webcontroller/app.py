@@ -47,89 +47,32 @@ def sync():
     three_type = request.form["three_type"]
     four_type = request.form["four_type"]
     # sync motor A
-    if A_type == "großer EV3 Motor":
-        motor_A = LargeMotor(OUTPUT_A)
-    elif A_type == "kleiner EV3 Motor":
-        motor_A = MediumMotor(OUTPUT_A)
-    elif A_type == "großer NXT Motor":
-        motor_A = Motor(OUTPUT_A)
-    elif A_type == "nicht genutzt":
-        motor_A = "EMPTY"
-    # sync motor B
-    if B_type == "großer EV3 Motor":
-        motor_B = LargeMotor(OUTPUT_B)
-    elif B_type == "kleiner EV3 Motor":
-        motor_B = MediumMotor(OUTPUT_B)
-    elif B_type == "großer NXT Motor":
-        motor_B = Motor(OUTPUT_B)
-    elif B_type == "nicht genutzt":
-        motor_B = "EMPTY"
-    # sync motor C
-    if C_type == "großer EV3 Motor":
-        motor_C = LargeMotor(OUTPUT_C)
-    elif C_type == "kleiner EV3 Motor":
-        motor_C = MediumMotor(OUTPUT_C)
-    elif C_type == "großer NXT Motor":
-        motor_C = Motor(OUTPUT_C)
-    elif C_type == "nicht genutzt":
-        motor_C = "EMPTY"
-    # sync motor D
-    if D_type == "großer EV3 Motor":
-        motor_D = LargeMotor(OUTPUT_D)
-    elif D_type == "kleiner EV3 Motor":
-        motor_D = MediumMotor(OUTPUT_D)
-    elif D_type == "großer NXT Motor":
-        motor_D = Motor(OUTPUT_D)
-    elif D_type == "nicht genutzt":
-        motor_D = "EMPTY"
+    set_sync(request.form["A_type"], motor_A, OUTPUT_A)
+    set_sync(request.form["B_type"], motor_B, OUTPUT_B)
+    set_sync(request.form["C_type"], motor_C, OUTPUT_C)
+    set_sync(request.form["D_type"], motor_D, OUTPUT_D)
 
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
-    speed = int(request.form["speed"])
-    if A_type == "großer NXT Motor":
-        motor_A.speed_sp = speed
-    else:
-        motor_A.speed_sp = speed*10
-    return jsonify({"result" : "speed was updated to " + str(speed)})
+    set_speed(motor_A, request.form["speed"])
 
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
-    speed = int(request.form["speed"])
-    if B_type == "großer NXT Motor":
-        motor_B.speed_sp = speed
-    else:
-        motor_B.speed_sp = speed*10
-    return jsonify({"result" : "speed was updated to " + str(speed)})
+    set_speed(motor_B, request.form["speed"])
 
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
-    speed = int(request.form["speed"])
-    if C_type == "großer NXT Motor":
-        motor_C.speed_sp = speed
-    else:
-        motor_C.speed_sp = speed*10
-    return jsonify({"result" : "speed was updated to " + str(speed)})
+    set_speed(motor_C, request.form["speed"])
 
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
-    speed = int(request.form["speed"])
-    if D_type == "großer NXT Motor":
-        motor_D.speed_sp = speed
-    else:
-        motor_D.speed_sp = speed*10
-    return jsonify({"result" : "speed was updated to " + str(speed)})
-
+    set_speed(motor_D, request.form["speed"])
 
 # POWER UPDATER
 @app.route("/power_A", methods=["POST"])
 def power_A():
-    value = request.form["value"]
-    if value == "on":
-        motor_A.run_forever()
-    else:
-        motor_A.stop()
-    return jsonify({"result" : "power was updated to " + str(value)})
+    set_speed(motor_A, request.form["value"])
 
 @app.route("/power_B", methods=["POST"])
 def power_B():
@@ -158,6 +101,24 @@ def power_D():
         motor_D.stop()
     return jsonify({"result" : "power was updated to " + str(value)})
 
+
+def set_sync(type, motor, port):
+    match type:
+        case "großer EV3 Motor":
+            motor = LargeMotor(port)
+        case "kleiner EV3 Motor":
+            motor = MediumMotor(port)
+        case "großer NXT Motor":
+            motor = Motor(port)
+        case "nicht genutzt":
+            motor = "not used"
+
+def set_speed(motor, speed):
+    if A_type == "großer NXT Motor":
+        motor.speed_sp = speed
+    else:
+        motor.speed_sp = speed*10
+    return jsonify({"result" : "power was updated to " + str(speed)})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
