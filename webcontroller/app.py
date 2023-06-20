@@ -24,17 +24,17 @@ four_type = ""
 
 def set_sync(type, motor, port):
     match type:
-        case "großer EV3 Motor":
+        case "grosser EV3 Motor":
             motor = LargeMotor(port)
         case "kleiner EV3 Motor":
             motor = MediumMotor(port)
-        case "großer NXT Motor":
+        case "grosser NXT Motor":
             motor = Motor(port)
         case "nicht genutzt":
             motor = "not used"
 
 def set_speed(type, motor, speed):
-    if type == "großer NXT Motor":
+    if type == "grosser NXT Motor":
         motor.speed_sp = int(speed)
     else:
         motor.speed_sp = int(speed)*10
