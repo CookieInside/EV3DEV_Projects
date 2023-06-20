@@ -49,7 +49,7 @@ def set_power(motor, value):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("testing.html")
 
 # SPEAK
 @app.route("/speak", methods=["POST"])
