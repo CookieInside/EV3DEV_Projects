@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Sensoren</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Sensorendaten:</h1>
+        <p id="color">Loading...</p>
+        <p id="touch">Loading...</p>
+        <script>
+            $(document).ready(function() {
+                function updateValue() {
+                    $.getJSON('/get_data', function(data) {
+                        $('#color').text('color: ' + data.color);
+                        $('#touch').text('touch: ' + data.touch);
+                    });
+                }
+
+                setInterval(updateValue, 500);
+            });
+        </script>
+    </body>
+</html>
