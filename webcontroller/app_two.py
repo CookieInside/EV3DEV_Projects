@@ -23,14 +23,14 @@ def set_sync(type, motor, port):
 
 def set_speed(motor, speed):
     motor.on(speed=speed)
-    return jsonify({"result" : f"speed was updated to {speed}%"})
+    return jsonify({"result" : "speed was updated to " + speed + "%"})
 
 def set_power(motor, value):
     if value == "on":
         motor.run_forever()
     else:
         motor.off()
-        return jsonify({"result" : f"the motor is now {value}"})
+        return jsonify({"result" : "the motor is now " + value})
 
 @app.route("/")
 def index():
@@ -44,7 +44,7 @@ def speak():
     return jsonify({"result" : "the robot said: '" + value + "'."})
 
 # SYNC
-@app.rout("/sync", methods=["POST"])
+@app.route("/sync", methods=["POST"])
 def sync():
     # type-update
     A_type = request.form["A_type"]
