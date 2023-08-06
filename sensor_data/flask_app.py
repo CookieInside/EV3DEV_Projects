@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-from ev3dev2.sensor.lego import TouchSensor, ColorSensor, GyroSensor, UltrasonicSensor
+from ev3dev2.sensor.lego import TouchSensor, ColorSensor, GyroSensor, UltrasonicSensor, SoundSensor, InfraredSensor, LightSensor
 from time import sleep
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 

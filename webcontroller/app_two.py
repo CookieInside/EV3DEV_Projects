@@ -1,4 +1,6 @@
 from flask import Flask, render_template, jsonify, request
+from ev3dev2.sensor.lego import TouchSensor, ColorSensor, GyroSensor, UltrasonicSensor, SoundSensor, InfraredSensor, LightSensor
+from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, Motor
 from ev3dev2.sound import Sound
 
@@ -36,6 +38,14 @@ def set_power(motor, value):
 def index():
     return render_template("testing.html")
 
+@app.route("/get_sensor")
+def get_sensor():
+    color_values = ["keine Farbe erkennbar", "Schwarz", "Blau", "Gruen", "Gelb", "Rot", "Weiss", "Braun"]
+    touch_values = ["wird nicht gedrueckt", "wird gedrueckt"]
+    return jsonify({
+        "color" : color_values[color_sensor.color],
+        "touch" : touch_values[touch_sensor.is_pressed]
+    })
 # SPEAK
 @app.route("/speak", methods=["POST"])
 def speak():
