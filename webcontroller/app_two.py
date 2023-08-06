@@ -1,27 +1,57 @@
 from flask import Flask, render_template, jsonify, request
 from ev3dev2.sensor.lego import TouchSensor, ColorSensor, GyroSensor, UltrasonicSensor, SoundSensor, InfraredSensor, LightSensor
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.motor import LargeMotor, MediumMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, Motor
+from ev3dev2.motor import LargeMotor, MediumMotor, Motor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D
 from ev3dev2.sound import Sound
 
+
+# GLOBAL VARS
 sound = Sound()
 app = Flask(__name__)
 
+
 # GLOBAL MOTORS
-motors = []
+motors = [None, None, None, None]
 
 # GLOBAL SENSORS
-sensors = []
+sensors = [None, None, None, None]
 
-def set_sync(type, motor, port):
-    if type == "grosser EV3 Motor":
-        motor = LargeMotor(port)
-    elif type == "kleiner EV3 Motor":
-        motor = MediumMotor(port)
-    elif type == "grosser NXT Motor":
-        motor = Motor(port)
-    elif type == "nicht genutzt":
-            motor = "not used"
+
+def get_sensor_value(sensor):
+    COLOR_VALUES = ["keine Farbe erkennbar", "Schwarz", "Blau", "Gruen", "Gelb", "Rot", "Weiss", "Braun"]
+    TOUCH_VALUES = ["Tastsensor wird nicht gedrückt", "Tastsensor wird gedrückt"]
+    if type(sensor) == TouchSensor:
+        return TOUCH_VALUES[sensor.is_pressed]
+    if type(sensor) == ColorSensor:
+        return "Farbe: " + COLOR_VALUES[sensor.color] + "<br>Umgebungslichtintensität: " + str(sensor.ambient_light_intensity) + "<br> Reflektierte Lichtintensität: " + str(sensor.reflected_light_intensity)
+    if sensor == "not used":
+        return "Sensor wird nicht genutzt"
+
+def post_sensor():
+    data = {}
+    data["port_1"] = get_sensor_value(sensors[0])
+    data["port_2"] = get_sensor_value(sensors[1])
+    data["port_3"] = get_sensor_value(sensors[2])
+    data["port_4"] = get_sensor_value(sensors[3])
+    return data
+
+def set_sync(type, device_type, device_index, port):
+    if device_type == "motor":
+        if type == "grosser EV3 Motor":
+            motors[device_index] = LargeMotor(port)
+        elif type == "kleiner EV3 Motor":
+            motors[device_index] = MediumMotor(port)
+        elif type == "grosser NXT Motor":
+            motors[device_index] = Motor(port)
+        elif type == "nicht genutzt":
+            motors[device_index] = "not used"
+    elif device_type == "sensor":
+        if type == "Tastsensor":
+            sensors[device_index] = TouchSensor(port)
+        elif type == "Farbsensor":
+            sensors[device_index] = ColorSensor(port)
+        elif type == "nicht genutzt":
+            sensors[device_index] = "not used"
 
 def set_speed(motor, speed):
     motor.on(speed=speed)
@@ -36,16 +66,11 @@ def set_power(motor, value):
 
 @app.route("/")
 def index():
-    return render_template("testing.html")
+    return render_template("testing_sensor_extension.html")
 
 @app.route("/get_sensor")
 def get_sensor():
-    color_values = ["keine Farbe erkennbar", "Schwarz", "Blau", "Gruen", "Gelb", "Rot", "Weiss", "Braun"]
-    touch_values = ["wird nicht gedrueckt", "wird gedrueckt"]
-    return jsonify({
-        "color" : color_values[color_sensor.color],
-        "touch" : touch_values[touch_sensor.is_pressed]
-    })
+    return jsonify(post_sensor())
 # SPEAK
 @app.route("/speak", methods=["POST"])
 def speak():
@@ -56,37 +81,33 @@ def speak():
 # SYNC
 @app.route("/sync", methods=["POST"])
 def sync():
-    # type-update
-    A_type = request.form["A_type"]
-    B_type = request.form["B_type"]
-    C_type = request.form["C_type"]
-    D_type = request.form["D_type"]
-    one_type = request.form["one_type"]
-    two_type = request.form["two_type"]
-    three_type = request.form["three_type"]
-    four_type = request.form["four_type"]
-    # sync motor A
-    set_sync(request.form["A_type"], motors[0], OUTPUT_A)
-    set_sync(request.form["B_type"], motors[1], OUTPUT_B)
-    set_sync(request.form["C_type"], motors[2], OUTPUT_C)
-    set_sync(request.form["D_type"], motors[3], OUTPUT_D)
-
+    data = request.get_json()
+    print("||||||||||||||||||||||||||||||||||" + str(data) + "||||||||||||||||||||||||||||||||||")
+    set_sync(data["a_type"], "motor", 0, OUTPUT_A)
+    set_sync(data["b_type"], "motor", 1, OUTPUT_B)
+    set_sync(data["c_type"], "motor", 2, OUTPUT_C)
+    set_sync(data["d_type"], "motor", 3, OUTPUT_D)
+    set_sync(data["one_type"], "sensor", 0, INPUT_1)
+    set_sync(data["two_type"], "sensor", 1, INPUT_2)
+    set_sync(data["three_type"], "sensor", 2, INPUT_3)
+    set_sync(data["four_type"], "sensor", 3, INPUT_4)
+    return jsonify({"result" : "sync method called"})
 # SPEED UPDATER
 @app.route("/speed_A", methods=["POST"])
 def speed_A():
-    return set_speed(motors[0], request.form["speed"])
+    return set_speed(motors[0], int(request.form["speed"]))
     
 @app.route("/speed_B", methods=["POST"])
 def speed_B():
-    return set_speed(motors[1], request.form["speed"])
+    return set_speed(motors[1], int(request.form["speed"]))
     
 @app.route("/speed_C", methods=["POST"])
 def speed_C():
-    return set_speed(motors[2], request.form["speed"])
+    return set_speed(motors[2], int(request.form["speed"]))
     
 @app.route("/speed_D", methods=["POST"])
 def speed_D():
-    return set_speed(motors[3], request.form["speed"])
+    return set_speed(motors[3], int(request.form["speed"]))
     
 # POWER UPDATER
 @app.route("/power_A", methods=["POST"])

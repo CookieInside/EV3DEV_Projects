@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<body onload="send_values('sync', '')">
     <div class="container">
         <div class="table-responsive">
             <table class="table table-bordered">
@@ -109,7 +109,7 @@
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
                                 <option>Temperatursensor</option>
-                                <option>Berührungssensor</option>
+                                <option>Tastsensor</option>
                                 <option>Ultraschallsensor</option>
                                 <option>Beschleunigungssensor</option>
                                 <option>nicht genutzt</option>
@@ -121,7 +121,7 @@
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
                                 <option>Temperatursensor</option>
-                                <option>Berührungssensor</option>
+                                <option>Tastsensor</option>
                                 <option>Ultraschallsensor</option>
                                 <option>Beschleunigungssensor</option>
                                 <option>nicht genutzt</option>
@@ -133,7 +133,7 @@
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
                                 <option>Temperatursensor</option>
-                                <option>Berührungssensor</option>
+                                <option>Tastsensor</option>
                                 <option>Ultraschallsensor</option>
                                 <option>Beschleunigungssensor</option>
                                 <option>nicht genutzt</option>
@@ -145,7 +145,7 @@
                                 <option>Lichtsensor</option>
                                 <option>Schallsensor</option>
                                 <option>Temperatursensor</option>
-                                <option>Berührungssensor</option>
+                                <option>Tastsensor</option>
                                 <option>Ultraschallsensor</option>
                                 <option>Beschleunigungssensor</option>
                                 <option>nicht genutzt</option>
@@ -155,19 +155,19 @@
                     <tr>
                         <td>
                             <h7><u>Sensorstatus:</u></h7>
-                            <p>Aktuell gemessener Wert:<br> <span id="/value_one">...</span></p>
+                            <p>Aktuell gemessene(r) Wert(e):<br> <span id="port_1">...</span></p>
                         </td>
                         <td>
                             <h7><u>Sensorstatus:</u></h7>
-                            <p>Aktuell gemessener Wert:<br> <span id="/value_one">...</span></p>
+                            <p>Aktuell gemessene(r) Wert(e):<br> <span id="port_2">...</span></p>
                         </td>
                         <td>
                             <h7><u>Sensorstatus:</u></h7>
-                            <p>Aktuell gemessener Wert:<br> <span id="/value_one">...</span></p>
+                            <p>Aktuell gemessene(r) Wert(e):<br> <span id="port_3">...</span></p>
                         </td>
                         <td>
                             <h7><u>Sensorstatus:</u></h7>
-                            <p>Aktuell gemessener Wert:<br> <span id="/value_one">...</span></p>
+                            <p>Aktuell gemessene(r) Wert(e):<br> <span id="port_4">...</span></p>
                         </td>
                     </tr>
             </table>
@@ -189,14 +189,34 @@
                     });
                 }
                 else if(where.includes("sync")){
+                    console.log(document.getElementById("a_type").checked);
+                    fetch("/sync", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            a_type: document.getElementById("a_type").value,
+                            b_type: document.getElementById("b_type").value,
+                            c_type: document.getElementById("c_type").value,
+                            d_type: document.getElementById("d_type").value,
+                            one_type: document.getElementById("one_type").value,
+                            two_type: document.getElementById("two_type").value,
+                            three_type: document.getElementById("three_type").value,
+                            four_type: document.getElementById("four_type").value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data =>{
+                        console.log(data);
+                    });/*
+                    console.log(document.getElementById("a_type").checked)
                     $.ajax({
                         type: "POST",
                         url: "/sync",
                         data: {
-                            A_type: document.getElementById("a_type").checked,
-                            B_type: document.getElementById("b_type").checked,
-                            C_type: document.getElementById("c_type").checked,
-                            D_type: document.getElementById("d_type").checked,
+                            a_type: document.getElementById("a_type").checked,
+                            b_type: document.getElementById("b_type").checked,
+                            c_type: document.getElementById("c_type").checked,
+                            d_type: document.getElementById("d_type").checked,
                             one_type: document.getElementById("one_type").checked,
                             two_type: document.getElementById("two_type").checked,
                             three_type: document.getElementById("three_type").checked,
@@ -205,18 +225,23 @@
                         success: function(response){
                             console.log(response);
                         }
-                    });
+                    });*/
                 }
 
             }
 
-            PRESET_GYRO = "";
-            PRESET_TOUCH = "";
-            PRESET_COLOR = "";
-            PRESET_SOUND = "";
-            PRESET_LIGHT = "";
-            PRESET_INFRARED = "";
-            PRESET_ULTRASONIC = "";
+            function update_sensor(){
+                fetch("/get_sensor")
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("port_1").innerHTML = data["port_1"];
+                        document.getElementById("port_2").innerHTML = data["port_2"];
+                        document.getElementById("port_3").innerHTML = data["port_3"];
+                        document.getElementById("port_4").innerHTML = data["port_4"];
+                    })
+            }
+            update_sensor();
+            setInterval(update_sensor, 5000);
         </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
